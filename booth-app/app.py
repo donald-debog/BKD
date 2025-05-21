@@ -106,7 +106,7 @@ def finish(session_id):
 
     # ✅ Create QR with short code
     short_code = session_map.get(session_id, session_id)
-    qr_url = f"https://bkd-photo.vercel.app/photo/{short_code}"
+    qr_url = f"https://bkd-donald-sextons-projects.vercel.app/photo/{short_code}"
     qr = qrcode.make(qr_url)
     qr_path = os.path.join(session_path, "qr.png")
     qr.save(qr_path)
@@ -117,6 +117,19 @@ def finish(session_id):
 @app.route('/photos/<path:filename>')
 def serve_photo_file(filename):
     return send_from_directory('photos', filename)
+
+session = boto3.session.Session()
+r2 = session.client(
+    service_name="s3",
+    region_name="auto",
+    endpoint_url=os.getenv("R2_ENDPOINT"),
+    aws_access_key_id=os.getenv("R2_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("R2_SECRET_ACCESS_KEY"),
+)
+
+def upload_to_r2(file_path, object_name):
+    with open(file_path, "rb") as f:
+        r2.upload_fileobj(f, os.getenv("R2_BUCKET"), object_name)
 
 if __name__ == "__main__":
     app.run(debug=True)
