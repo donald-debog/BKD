@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Scan Your Photo</title>
+  <style>
+    body { background: black; color: gold; text-align: center; font-family: sans-serif; padding: 5rem; }
+    img { max-width: 60%; border: 5px solid gold; padding: 1rem; background: white; }
+    button { background: gold; color: black; padding: 1rem 2rem; font-size: 1.5rem; border: none; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h2>Scan this to get your photos</h2>
+  <img src="/{{ qr_image }}" />
+  <p>
+  <form action="/start" method="post">
+    <button>Start New Session</button>
+  </p>
+</body>
+</html>
